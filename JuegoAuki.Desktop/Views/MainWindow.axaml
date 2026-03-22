@@ -1,0 +1,179 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:JuegoAuki.Desktop.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="760"
+        x:Class="JuegoAuki.Desktop.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Aventuras Blocky: La Isla del Saber"
+        Width="1100"
+        Height="760"
+        MinWidth="900"
+        MinHeight="640">
+  <Grid RowDefinitions="Auto,Auto,*" Background="#F6FAFF">
+    <Border Background="#5B7CFA" Padding="24" CornerRadius="0,0,18,18">
+      <Grid ColumnDefinitions="*,Auto,Auto,Auto" VerticalAlignment="Center">
+        <StackPanel>
+          <TextBlock Text="Aventuras Blocky" FontSize="30" FontWeight="Bold" Foreground="White" />
+          <TextBlock Text="Explora, resuelve misiones y aprende jugando." FontSize="16" Foreground="#E8EEFF" />
+        </StackPanel>
+        <Border Grid.Column="1" Background="#FFFFFF22" Padding="14,8" CornerRadius="14" Margin="12,0,0,0">
+          <StackPanel>
+            <TextBlock Text="Nivel" Foreground="#E8EEFF" />
+            <TextBlock Text="{Binding Level}" FontSize="22" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" />
+          </StackPanel>
+        </Border>
+        <Border Grid.Column="2" Background="#FFFFFF22" Padding="14,8" CornerRadius="14" Margin="12,0,0,0">
+          <StackPanel>
+            <TextBlock Text="Monedas" Foreground="#E8EEFF" />
+            <TextBlock Text="{Binding Coins}" FontSize="22" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" />
+          </StackPanel>
+        </Border>
+        <Border Grid.Column="3" Background="#FFFFFF22" Padding="14,8" CornerRadius="14" Margin="12,0,0,0">
+          <StackPanel>
+            <TextBlock Text="Estrellas" Foreground="#E8EEFF" />
+            <TextBlock Text="{Binding Stars}" FontSize="22" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" />
+          </StackPanel>
+        </Border>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1" ColumnDefinitions="2*,3*" Margin="24,20,24,0">
+      <Border Background="White" CornerRadius="18" Padding="18" Margin="0,0,12,0" BoxShadow="0 10 25 0 #14000000">
+        <StackPanel Spacing="12">
+          <TextBlock Text="Tu explorador" FontSize="24" FontWeight="Bold" Foreground="#22304A" />
+          <Border Background="{Binding AvatarColor}" CornerRadius="18" Padding="18">
+            <Grid ColumnDefinitions="140,*" VerticalAlignment="Center">
+              <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
+                <Border Width="72" Height="72" CornerRadius="36" Background="#FFE9B2" />
+                <Border Width="90" Height="90" CornerRadius="22" Background="#FFFFFF99" />
+              </StackPanel>
+              <StackPanel Grid.Column="1" Spacing="6">
+                <TextBlock Text="{Binding AvatarName}" FontSize="22" FontWeight="Bold" Foreground="White" />
+                <TextBlock Text="Peinado: {Binding SelectedHair}" Foreground="White" />
+                <TextBlock Text="Ropa: {Binding SelectedOutfit}" Foreground="White" />
+                <TextBlock Text="Mascota: {Binding SelectedPet}" Foreground="White" />
+              </StackPanel>
+            </Grid>
+          </Border>
+
+          <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+            <StackPanel>
+              <TextBlock Text="Peinado" FontWeight="SemiBold" />
+              <ComboBox SelectedItem="{Binding SelectedHair}" ItemsSource="{Binding HairOptions}" />
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+              <TextBlock Text="Ropa" FontWeight="SemiBold" />
+              <ComboBox SelectedItem="{Binding SelectedOutfit}" ItemsSource="{Binding OutfitOptions}" />
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+              <TextBlock Text="Mascota" FontWeight="SemiBold" />
+              <ComboBox SelectedItem="{Binding SelectedPet}" ItemsSource="{Binding PetOptions}" />
+            </StackPanel>
+          </Grid>
+
+          <TextBlock Text="Color del avatar" FontWeight="SemiBold" />
+          <ItemsControl ItemsSource="{Binding AvatarColors}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" Spacing="8" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Button Width="40" Height="40"
+                        Background="{Binding Hex}"
+                        Command="{Binding $parent[Window].DataContext.SelectColorCommand}"
+                        CommandParameter="{Binding Hex}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+
+      <Border Grid.Column="1" Background="White" CornerRadius="18" Padding="18" Margin="12,0,0,0" BoxShadow="0 10 25 0 #14000000">
+        <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10">
+          <TextBlock Text="Misión activa" FontSize="24" FontWeight="Bold" Foreground="#22304A" />
+          <Border Grid.Row="1" Background="#EEF4FF" CornerRadius="14" Padding="16">
+            <Grid ColumnDefinitions="*,Auto">
+              <StackPanel Spacing="6">
+                <TextBlock Text="{Binding CurrentChallenge.Title}" FontSize="20" FontWeight="Bold" Foreground="#22304A" />
+                <TextBlock Text="{Binding CurrentChallenge.Story}" TextWrapping="Wrap" Foreground="#42526B" />
+                <TextBlock Text="{Binding CurrentChallenge.Question}" FontSize="18" FontWeight="SemiBold" Foreground="#5B3FD1" Margin="0,6,0,0" />
+              </StackPanel>
+              <StackPanel Grid.Column="1" Spacing="8" HorizontalAlignment="Right">
+                <TextBlock Text="Mundo" FontWeight="SemiBold" HorizontalAlignment="Right" />
+                <TextBlock Text="{Binding CurrentChallenge.World}" FontSize="18" FontWeight="Bold" Foreground="#5B7CFA" HorizontalAlignment="Right" />
+                <Button Content="Nueva misión" Command="{Binding NextChallengeCommand}" />
+              </StackPanel>
+            </Grid>
+          </Border>
+
+          <Grid Grid.Row="2" ColumnDefinitions="3*,2*" ColumnSpacing="14">
+            <Border Background="#FFFDF4" CornerRadius="14" Padding="16">
+              <StackPanel Spacing="12">
+                <TextBlock Text="Opciones" FontSize="20" FontWeight="Bold" Foreground="#22304A" />
+                <ItemsControl ItemsSource="{Binding CurrentChallenge.Options}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Button Content="{Binding}" HorizontalContentAlignment="Center" Padding="12" FontSize="16"
+                              Command="{Binding $parent[Window].DataContext.AnswerCommand}"
+                              CommandParameter="{Binding}" Margin="0,0,0,10" />
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Text="{Binding FeedbackMessage}" FontSize="17" FontWeight="SemiBold" Foreground="#0B7A4B" TextWrapping="Wrap" />
+              </StackPanel>
+            </Border>
+
+            <StackPanel Grid.Column="1" Spacing="12">
+              <Border Background="#F5F8FF" CornerRadius="14" Padding="16">
+                <StackPanel Spacing="8">
+                  <TextBlock Text="Progreso de mundos" FontSize="20" FontWeight="Bold" Foreground="#22304A" />
+                  <ItemsControl ItemsSource="{Binding WorldProgress}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <Border Background="#FFFFFF" CornerRadius="12" Padding="10" Margin="0,0,0,8">
+                          <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel>
+                              <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                              <TextBlock Text="{Binding Summary}" Foreground="#5A6780" />
+                            </StackPanel>
+                            <TextBlock Grid.Column="1" Text="{Binding CompletedLabel}" FontWeight="Bold" VerticalAlignment="Center" Foreground="#5B7CFA" />
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Border>
+
+              <Border Background="#F2FFFA" CornerRadius="14" Padding="16">
+                <StackPanel Spacing="8">
+                  <TextBlock Text="Logros educativos" FontSize="20" FontWeight="Bold" Foreground="#22304A" />
+                  <TextBlock Text="✔ Matemática básica: sumas, restas y conteo" />
+                  <TextBlock Text="✔ Lectura: vocabulario y comprensión" />
+                  <TextBlock Text="✔ Lógica: patrones, orden y problemas" />
+                </StackPanel>
+              </Border>
+            </StackPanel>
+          </Grid>
+        </Grid>
+      </Border>
+    </Grid>
+
+    <Border Grid.Row="2" Margin="24,20,24,24" Background="#22304A" CornerRadius="18" Padding="18">
+      <Grid ColumnDefinitions="3*,2*" ColumnSpacing="12">
+        <StackPanel Spacing="8">
+          <TextBlock Text="Cómo se juega" FontSize="22" FontWeight="Bold" Foreground="White" />
+          <TextBlock Text="1. Personaliza tu explorador. 2. Lee la misión. 3. Elige la respuesta correcta. 4. Gana monedas, estrellas y desbloquea nuevos mundos." Foreground="#DCE8FF" TextWrapping="Wrap" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" Spacing="8">
+          <TextBlock Text="Consejo para adultos" FontSize="22" FontWeight="Bold" Foreground="White" />
+          <TextBlock Text="Ideal para sesiones cortas de 10 a 15 minutos. El feedback es positivo y los errores activan nuevos intentos sin castigo." Foreground="#DCE8FF" TextWrapping="Wrap" />
+        </StackPanel>
+      </Grid>
+    </Border>
+  </Grid>
+</Window>
